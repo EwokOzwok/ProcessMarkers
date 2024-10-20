@@ -40,6 +40,11 @@ app_server <- function(input, output, session) {
                                       M5 = logical(),
                                       stringsAsFactors = FALSE)  # Re-initialize
 
+
+
+
+
+
     output$participant_start_info <- renderUI({
       tagList(
         f7Block(
@@ -47,8 +52,10 @@ app_server <- function(input, output, session) {
             intensity = 5,
             hover = TRUE,
             f7Card(
-              h3("Participant Instructions:"),
-              h4("When instructed, press the continue button below:"),
+              f7Align(h2("Participant Instructions:"), side = c("center")),
+              br(),
+              f7Align(h3("When instructed, press the continue button below:"), side = c("center")),
+              br(),
               f7Button("participant_start_button", "Continue"),
               footer = NULL,
               hairlines = FALSE, strong = TRUE, inset = FALSE, tablet = FALSE
@@ -67,6 +74,9 @@ app_server <- function(input, output, session) {
     updateF7Tabs(session = session, id = "tabs", selected = "TimerTab")
   })
 
+
+
+
   observe({
     invalidateLater(1000, session)
     isolate({
@@ -74,19 +84,30 @@ app_server <- function(input, output, session) {
         time_remaining <- timer()
         output$countdown <- renderUI({
           tagList(
-            br(),
-            br(),
-            br(),
-            f7Align(h1(paste("Identify Markers in", time_remaining, "seconds", sep=" ")), side=c("center"))
+            f7Block(
+              f7Shadow(
+                intensity = 5,
+                hover = TRUE,
+                f7Card(
+                  f7Align(h1(paste("Identify Markers in", time_remaining, "seconds", sep=" ")), side=c("center")),
+                  footer = NULL,
+                  hairlines = F, strong = T, inset = F, tablet = FALSE)))
           )
         })
         timer(timer() - 1)
         if (timer() == 0) {
           output$countdown <- renderUI({
             tagList(
-              f7Align(h1("Click Identify Markers to provide data"), side=c("center")),
-              br(),
-              f7Button("provide_data_button", "Identify Markers")
+              f7Block(
+                f7Shadow(
+                  intensity = 5,
+                  hover = TRUE,
+                  f7Card(
+                    f7Align(h1("Click Identify Markers to provide data"), side=c("center")),
+                    br(),
+                    f7Button("provide_data_button", "Identify Markers"),
+                    footer = NULL,
+                    hairlines = F, strong = T, inset = F, tablet = FALSE)))
             )
           })
           active(FALSE)
@@ -99,23 +120,34 @@ app_server <- function(input, output, session) {
     updateF7Tabs(session, id = "tabs", selected = "ProvideData")
   })
 
+
+
+
+
   # Render the data collection UI
   output$DataCollection <- renderUI({
     tagList(
-      f7Align(h2("Select all the markers that you observed in the past minute"), side = c("center")),
-      br(),
-      f7Checkbox("marker1", "Marker1"),
-      br(),
-      f7Checkbox("marker2", "Marker2"),
-      br(),
-      f7Checkbox("marker3", "Marker3"),
-      br(),
-      f7Checkbox("marker4", "Marker4"),
-      br(),
-      f7Checkbox("marker5", "Marker5"),
-      br(),
-      h4("Press 'Done' when finished"),
-      f7Button('submit_data', "Done")
+      f7Block(
+        f7Shadow(
+          intensity = 5,
+          hover = TRUE,
+          f7Card(
+            f7Align(h2("Select all the markers that you observed in the past minute"), side = c("center")),
+            br(),
+            f7Checkbox("marker1", "Marker1"),
+            br(),
+            f7Checkbox("marker2", "Marker2"),
+            br(),
+            f7Checkbox("marker3", "Marker3"),
+            br(),
+            f7Checkbox("marker4", "Marker4"),
+            br(),
+            f7Checkbox("marker5", "Marker5"),
+            br(),
+            h4("Press 'Done' when finished"),
+            f7Button('submit_data', "Done"),
+            footer = NULL,
+            hairlines = F, strong = T, inset = F, tablet = FALSE)))
     )
   })
 
