@@ -21,6 +21,7 @@ app_server <- function(input, output, session) {
                     M3 = logical(),
                     M4 = logical(),
                     M5 = logical(),
+                    SysTime = as.POSIXct(character()),  # Initialize SysTime with correct type
                     stringsAsFactors = FALSE)  # Start with an empty data frame
   )
 
@@ -38,12 +39,8 @@ app_server <- function(input, output, session) {
                                       M3 = logical(),
                                       M4 = logical(),
                                       M5 = logical(),
+                                      SysTime = as.POSIXct(character()),  # Initialize correctly
                                       stringsAsFactors = FALSE)  # Re-initialize
-
-
-
-
-
 
     output$participant_start_info <- renderUI({
       tagList(
@@ -69,13 +66,10 @@ app_server <- function(input, output, session) {
 
   # Start the countdown when participant presses "Start Timer"
   observeEvent(input$participant_start_button, {
-    timer(5)
+    timer(60)
     active(TRUE)
     updateF7Tabs(session = session, id = "tabs", selected = "TimerTab")
   })
-
-
-
 
   observe({
     invalidateLater(1000, session)
@@ -117,12 +111,10 @@ app_server <- function(input, output, session) {
   })
 
   observeEvent(input$provide_data_button, {
+    timer(60)
+    active(TRUE)
     updateF7Tabs(session, id = "tabs", selected = "ProvideData")
   })
-
-
-
-
 
   # Render the data collection UI
   output$DataCollection <- renderUI({
@@ -164,6 +156,7 @@ app_server <- function(input, output, session) {
       M3 = input$marker3,
       M4 = input$marker4,
       M5 = input$marker5,
+      SysTime = Sys.time(),  # Use the correct function for system time
       stringsAsFactors = FALSE
     )
 
@@ -189,8 +182,6 @@ app_server <- function(input, output, session) {
     data_collection_timepoint(data_collection_timepoint() + 1)
 
     # Reset timer and switch back to TimerTab
-    timer(5)
-    active(TRUE)
     updateF7Tabs(session = session, id = "tabs", selected = "TimerTab")
   })
 
