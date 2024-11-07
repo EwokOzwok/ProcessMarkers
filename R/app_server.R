@@ -90,31 +90,34 @@ app_server <- function(input, output, session) {
         })
         timer(timer() - 1)
         if (timer() == 0) {
-          output$countdown <- renderUI({
-            tagList(
-              f7Block(
-                f7Shadow(
-                  intensity = 5,
-                  hover = TRUE,
-                  f7Card(
-                    f7Align(h1("Click Identify Markers to provide data"), side=c("center")),
-                    br(),
-                    f7Button("provide_data_button", "Identify Markers"),
-                    footer = NULL,
-                    hairlines = F, strong = T, inset = F, tablet = FALSE)))
-            )
-          })
-          active(FALSE)
+          timer(60)
+          active(TRUE)
+          updateF7Tabs(session, id = "tabs", selected = "ProvideData")
+          # output$countdown <- renderUI({
+          #   tagList(
+          #     f7Block(
+          #       f7Shadow(
+          #         intensity = 5,
+          #         hover = TRUE,
+          #         f7Card(
+          #           f7Align(h1("Click Identify Markers to provide data"), side=c("center")),
+          #           br(),
+          #           f7Button("provide_data_button", "Identify Markers"),
+          #           footer = NULL,
+          #           hairlines = F, strong = T, inset = F, tablet = FALSE)))
+          #   )
+          # })
+          # active(FALSE)
         }
       }
     })
   })
 
-  observeEvent(input$provide_data_button, {
-    timer(60)
-    active(TRUE)
-    updateF7Tabs(session, id = "tabs", selected = "ProvideData")
-  })
+  # observeEvent(input$provide_data_button, {
+  #   timer(60)
+  #   active(TRUE)
+  #   updateF7Tabs(session, id = "tabs", selected = "ProvideData")
+  # })
 
   # Render the data collection UI
   output$DataCollection <- renderUI({
